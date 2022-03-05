@@ -1,0 +1,17 @@
+name: ci
+on:
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'design/**'
+  push:
+    paths-ignore:
+      - '**.md'
+      - 'design/**'
+    branches: [main, develop]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: make build
