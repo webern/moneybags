@@ -83,10 +83,7 @@ where
     Ok(parsed)
 }
 
-/// Although we could use serde `Deserialize` with `csv`, I find `csv`'s constraints on the file to
-/// be too strict. I want to make sure that test data which is well-formed does not fail to parse,
-/// so I have handcrafted some parsing using this wrapper struct. Using `serde` deserialize would
-/// fail due to whitespace and/or incorrect number of commas in a record.
+/// A wrapping type for a collection of records.
 #[derive(Debug, Default, Clone, Eq, PartialEq)]
 pub struct Records(BTreeMap<u16, Record>);
 
