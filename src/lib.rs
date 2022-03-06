@@ -91,10 +91,10 @@ pub struct Record {
     record_type: RecordType,
 
     /// The client ID will be unique per client though are not guaranteed to be ordered.
-    client: u64,
+    client: u32,
 
     /// Transaction IDs (tx) are globally unique and not guaranteed to be ordered.
-    tx: u64,
+    tx: u32,
 
     /// The amount of the transaction, in fixed-precision decimal type. This type will not
     /// accumulate errors like a floating point type would.
@@ -127,10 +127,10 @@ pub struct Records(BTreeMap<Id, Record>);
 #[derive(Debug, Clone, Copy, Eq, Ord, PartialEq, PartialOrd, Hash)]
 enum Id {
     /// A Deposit or Withdrawal that has a real ID.
-    Tx(u64),
+    Tx(u32),
     /// A Dispute, Resolve or Chargeback for which we have not been given a real ID. We make one up
     /// instead.
-    Fake(u64),
+    Fake(u32),
 }
 
 impl Records {
@@ -138,7 +138,7 @@ impl Records {
     pub fn from_reader(reader: impl Read) -> Result<Self> {
         let mut csv_reader = csv::Reader::from_reader(reader);
         let mut records = BTreeMap::new();
-        let mut fake_id = 0u64;
+        let mut fake_id = 0u32;
 
         for result in csv_reader.deserialize() {
             let record: Record = result?;
@@ -173,7 +173,7 @@ impl Records {
 #[serde(rename_all = "snake_case")]
 pub struct Client {
     #[serde(rename = "client")]
-    id: u64,
+    id: u32,
     available: Decimal,
     held: Decimal,
     total: Decimal,
@@ -181,7 +181,7 @@ pub struct Client {
 }
 
 impl Client {
-    pub fn new(id: u64) -> Self {
+    pub fn new(id: u32) -> Self {
         Self {
             id,
             ..Default::default()
