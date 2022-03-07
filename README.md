@@ -10,23 +10,23 @@ the resultant account balances.
 
 Example: `moneybags transactions.csv > accounts.csv`
 
-Given this input:
+Input format looks like this:
 
 ```csv
-type, client, tx, amount
-deposit, 1, 1, 1.0
-deposit, 2, 2, 2.0
-deposit, 1, 3, 2.0
-withdrawal, 1, 4, 1.5
-withdrawal, 2, 5, 3.0
+type,client,tx,amount
+deposit,1,1,1.0
+deposit,2,2,2.0
+deposit,1,3,2.0
+withdrawal,1,4,1.5
+withdrawal,2,5,3.0
 ```
 
-Produces this output:
+Output format looks like this:
 
 ```csv
-client, available, held, total, locked
-1, 1.5, 0.0, 1.5, false
-2, 2.0, 0.0, 2.0, false
+client,available,held,total,locked
+1,1.5,0.0,1.5,false
+2,2.0,0.0,2.0,false
 ```
 
 Specifications for the input, output and behavior were provided and are not repeated here.
