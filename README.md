@@ -49,7 +49,7 @@ and linked to them in the codebase at their approximate locations.
 - [dispute, resolve and chargeback transactions have no IDs](https://github.com/webern/moneybags/issues/2)
 - [define min and max values for amount and client id types](https://github.com/webern/moneybags/issues/3)
 - [transactions on a frozen account](https://github.com/webern/moneybags/issues/4)
-- [can both debit and withdrawal transactions be disputed?](https://github.com/webern/moneybags/issues/5)
+- [can both deposit and withdrawal transactions be disputed?](https://github.com/webern/moneybags/issues/5)
 
 Edit: more questions...
 - What should we do if the client ID of a Chargeback, Resolve or Dispute does not match the client ID of the original 
