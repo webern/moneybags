@@ -124,6 +124,7 @@ pub struct Records(BTreeMap<Id, Record>);
 
 /// Dispute, Resolve and Chargeback records do not have an IDs of there own, but I want to give them
 /// some unique ID so they can be stored in the same map as Deposit and Withdrawal transactions.
+// TODO - this is hacky, see https://github.com/webern/moneybags/issues/2
 #[derive(Debug, Clone, Copy, Eq, Ord, PartialEq, PartialOrd, Hash)]
 enum Id {
     /// A Deposit or Withdrawal that has a real ID.
@@ -196,7 +197,7 @@ fn process_records(records: &Records) -> Result<Vec<Client>> {
         let mut client = *clients
             .entry(record.client)
             .or_insert_with(|| Client::new(record.client));
-        // TODO - what should we do if an account is already frozen?
+        // TODO - what if it is frozen? https://github.com/webern/moneybags/issues/4
         match record.record_type {
             RecordType::Deposit => {
                 client.available += record.amount;
@@ -233,7 +234,7 @@ fn process_records(records: &Records) -> Result<Vec<Client>> {
                     record.tx
                 ))?;
                 // TODO - what happens if available/held are less than chargeback amount?
-                client.available -= chargeback_record.amount;
+                client.total -= chargeback_record.amount;
                 client.held -= chargeback_record.amount;
                 client.locked = true;
             }
@@ -378,13 +379,13 @@ chargeback,555,"55","#;
           Id::Fake(1) => Record {
                 record_type: RecordType::Dispute,
                 client: 1,
-                tx: 2,
+                tx: 1,
                 ..Default::default()
             },
           Id::Fake(2) => Record {
                 record_type: RecordType::Chargeback,
                 client: 1,
-                tx: 2,
+                tx: 1,
                 ..Default::default()
             },
         ]);
@@ -395,8 +396,8 @@ chargeback,555,"55","#;
             *client,
             Client {
                 id: 1,
-                available: Decimal::new(-1005004, 4),
-                total: Decimal::new(1004998, 4),
+                available: Decimal::new(-1005001, 4),
+                total: Decimal::new(-1005001, 4),
                 locked: true,
                 ..Default::default()
             }
