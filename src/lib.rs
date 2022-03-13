@@ -208,6 +208,10 @@ fn process_record(
                 "Disputed record tx {} could not be found",
                 record.tx
             ))?;
+            ensure!(
+                disputed_record.client == record.client,
+                "Disputed record and current record have different client IDs"
+            );
             client.available -= disputed_record.amount;
             client.held += disputed_record.amount;
         }
@@ -216,6 +220,10 @@ fn process_record(
                 "Resolved record tx {} could not be found",
                 record.tx
             ))?;
+            ensure!(
+                resolved_record.client == record.client,
+                "Resolved record and current record have different client IDs"
+            );
             // TODO - what happens if held is less than resolved amount?
             client.available += resolved_record.amount;
             client.held -= resolved_record.amount;
@@ -225,6 +233,10 @@ fn process_record(
                 "Chargeback record tx {} could not be found",
                 record.tx
             ))?;
+            ensure!(
+                chargeback_record.client == record.client,
+                "Chargeback record and current record have different client IDs"
+            );
             // TODO - what happens if available/held are less than chargeback amount?
             client.total -= chargeback_record.amount;
             client.held -= chargeback_record.amount;
