@@ -13,11 +13,19 @@ fn path(filename: impl AsRef<str>) -> PathBuf {
 /// made with insufficient funds.
 #[test]
 fn given_example() {
-    assert!(Moneybags {
+    let mut output_bytes = Cursor::new(Vec::<u8>::new());
+    Moneybags {
         csv_file: path("given-example.csv"),
     }
-    .run(Cursor::new(Vec::<u8>::new()))
-    .is_err());
+    .run(&mut output_bytes)
+    .unwrap();
+
+    let output = String::from_utf8(output_bytes.into_inner()).unwrap();
+    let expected = r#"client,available,held,total,locked
+1,1.5,0,1.5,false
+2,2.0,0,2.0,false
+"#;
+    assert_eq!(output, expected);
 }
 
 /// An example containing two clients, one of which has a resolve and the other a chargeback.
@@ -35,7 +43,7 @@ fn resolve_and_chargeback() {
     let output = String::from_utf8(output_bytes.into_inner()).unwrap();
     let expected = r#"client,available,held,total,locked
 1,3.4,0.0,3.4,false
-2,1.2999,0.0,1.2999,true
+2,1.4999,0.0,1.4999,true
 "#;
     assert_eq!(output, expected);
 }

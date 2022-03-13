@@ -53,7 +53,7 @@ and linked to them in the codebase at their approximate locations.
 
 Edit: more questions...
 - What should we do if the client ID of a Chargeback, Resolve or Dispute does not match the client ID of the original 
-  record? Error? (Not handled.)
+  record? Error? (We print an error and do not process it.)
 - What should we do if a Chargeback or Resolve does not have a corresponding Dispute? (Not handled.)
 
 > For the cases you are handling are you handling them correctly?
