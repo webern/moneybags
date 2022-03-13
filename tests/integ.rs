@@ -43,7 +43,7 @@ fn resolve_and_chargeback() {
     let output = String::from_utf8(output_bytes.into_inner()).unwrap();
     let expected = r#"client,available,held,total,locked
 1,3.4,0.0,3.4,false
-2,1.2999,0.0,1.2999,true
+2,1.4999,0.0,1.4999,true
 "#;
     assert_eq!(output, expected);
 }

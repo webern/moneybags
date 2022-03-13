@@ -183,7 +183,13 @@ fn process_record(
     let mut client = *clients
         .entry(record.client)
         .or_insert_with(|| Client::new(record.client));
-    // TODO - what if it is frozen? https://github.com/webern/moneybags/issues/4
+
+    // TODO - what if it is locked? https://github.com/webern/moneybags/issues/4
+    // In the absence of guidance on locked accounts, we will assume that we
+    // should not process records for accounts that are locked. Note that there
+    // is no way for an account to become unlocked.
+    ensure!(!client.locked, "Client account is locked");
+
     match record.record_type {
         RecordType::Deposit => {
             client.available += record.amount;
